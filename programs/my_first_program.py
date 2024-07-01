@@ -1,12 +1,21 @@
 from nada_dsl import *
 
-
 def nada_main():
-    party1 = Party(name="Party1")
-    radius = SecretInteger(Input(name="radius", party=party1))
-    
-    # Compute the area of the circle
-    pi = 3.141592653589793
-    area = pi * (radius ** 2)
+    jatin = Party(name="Jatin")  
+    jayesh = Party(name="Jayesh") 
+    anirudh = Party(name="Anirudh") 
 
-    return [Output(area, "area_output", party1)]
+    jatin_salary = SecretInteger(Input(name="jatin_salary", party=jatin))
+    jayesh_salary = SecretInteger(Input(name="jayesh_salary", party=jayesh))
+    anirudh_salary = SecretInteger(Input(name="anirudh_salary", party=anirudh))
+
+    largest_position = (
+        (jatin_salary > jayesh_salary).if_else(
+            (jayesh_salary > anirudh_salary).if_else(Integer(0), Integer(2)),
+            (anirudh_salary > jatin_salary).if_else(Integer(1), Integer(2))
+        )
+    )
+
+    out = Output(largest_position, "largest_position", jatin)
+
+    return [out]
